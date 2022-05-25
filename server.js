@@ -55,5 +55,19 @@ app.post("/projects", async (req, res) => {
   res.status(201).send(project);
 });
 
+app.use((err, req, res, next) => {
+  console.error(err)
+  res.status(500).send('Something went wrong!')
+})
+
 const port = process.env.PORT || 3007;
-app.listen(port, () => console.log(`Server listening on port ${port}`));
+const server = app.listen(port, () => console.log(`Server listening on port ${port}`));
+
+process.on('unhandledRejection', (err) => {
+  console.error(err)
+  server.close(() => process.exit(1))
+})
+
+process.on('SIGTERM', (err) => {
+  server.close(() => console.log('SIGTERM received. Process terminated'))
+})
