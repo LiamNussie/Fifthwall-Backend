@@ -1,5 +1,6 @@
 require("dotenv").config();
 const express = require("express");
+const { Timestamp } = require("mongodb");
 const mongoose = require("mongoose");
 
 const app = express();
@@ -12,16 +13,23 @@ mongoose
   .then((db) => console.log(`MongoDB Connected: ${db.connection.host}`))
   .catch((err) => console.log(`MongoDB Connection Failed: ${err.message}`));
 
+  const schemaOptions = {
+    timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' },
+  };
+
 const projectSchema = new mongoose.Schema({
   bannerImg: String,
+  thumbImg: String,
   name: String,
-  about: String,
-  task: String,
+  about: [String],
   client: String,
   location: String,
   services: [String],
   gallery: [String],
-});
+  half: [String],
+  tiled: [String],
+  video: [String]
+}, schemaOptions);
 
 const Project = mongoose.model("Project", projectSchema);
 
@@ -52,7 +60,7 @@ app.delete("/projects/:id", async (req, res) => {
 app.post("/projects", async (req, res) => {
   const project = await Project.create(req.body);
 
-  res.status(201).send(project);
+  res.status(201).send({message: "Project Created Successfully!", project: project});
 });
 
 app.use((err, req, res, next) => {
