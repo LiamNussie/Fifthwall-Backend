@@ -62,7 +62,7 @@ app.delete("/projects/:id", async (req, res) => {
 app.post("/projects", async (req, res) => {
   const project = await Project.create(req.body);
 
-  res.status(201).send({message: "Project Created Successfully!", project: project});
+  res.status(201).send({message: "Project Created Successfully!!", project: project});
 });
 
 app.use((err, req, res, next) => {
