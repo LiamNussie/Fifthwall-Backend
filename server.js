@@ -19,6 +19,24 @@ mongoose
     timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' },
   };
 
+  const doomSchema = new mongoose.Schema({
+    action: String
+  }, schemaOptions);
+
+  const Action = mongoose.model("action", doomSchema);
+
+  app.get("/action", async (req, res) => {
+    const actions = await Action.find({});
+  
+    res.status(200).send(actions);
+  });
+
+  app.post("/action", async (req, res) => {
+    const action = await Action.create(req.body);
+  
+    res.status(201).send({message: "Action Created Successfully!!", action: action});
+  });
+
 const projectSchema = new mongoose.Schema({
   bannerImg: String,
   thumbImg: String,
