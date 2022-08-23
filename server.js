@@ -79,7 +79,6 @@ app.delete("/projects/:id", async (req, res) => {
 
 app.post("/projects", async (req, res) => {
   const project = await Project.create(req.body);
-// DOMMatrixReadOnly,d,d
   res.status(201).send({message: "Project Created Successfully!!", project: project});
 });
 
